@@ -23,10 +23,42 @@ class Word_processor(QtWidgets.QWidget):
         hbox.addWidget(self.exit)
 
         vbox = QtWidgets.QVBoxLayout()
+        vbox.addWidget(self.text_space)
+
+        vbox.addLayout(hbox)
+        self.setLayout(vbox)
+
+        self.setWindowTitle("Word Processor Program")
+
+        self.open.clicked.connect(self.open_file)
+        self.save.clicked.connect(self.save_file)
+        self.clear.clicked.connect(self.delete_text)
+        self.exit.clicked.connect(self.log_out)
+
+        self.show()
+
+    def open_file(self):
+        file = QtWidgets.QFileDialog.getOpenFileName(self, "Open File",os.getenv("Desktop"))
+
+        with open(file[0],"r") as file:
+            self.text_space.setText(file.read())
         
+    def save_file(self):
+        file = QtWidgets.QFileDialog.getSaveFileName(self,"Save File", os.getenv("Desktop"))
 
+        with open(file[0],"w") as file:
+            file.write(self.text_space.toPlainText())
 
+    def delete_text(self):
+        self.text_space.clear()
 
+    def log_out(self):
+        quit() 
+
+object  = QtWidgets.QApplication(sys.argv)
+
+wordProcessor = Word_processor()
+sys.exit(object.exec_())
 
 
 
